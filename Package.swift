@@ -23,12 +23,49 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "LookinServer",
-            path: "Src",
-            // 不公开头文件，默认是xxx/include(因为文件不存在默认会有警告)
+            dependencies: [.target(name: "LookinServerSwift")],
+            path: "Src/Main",
             publicHeadersPath: "",
-            // -I$SRCROOT/SourceCode/**
             cSettings: [
-                .headerSearchPath("**")
-            ]),
+                .headerSearchPath("**"),
+                .headerSearchPath("Server"),
+                .headerSearchPath("Server/Category"),
+                .headerSearchPath("Server/Connection"),
+                .headerSearchPath("Server/Connection/RequestHandler"),
+                .headerSearchPath("Server/Inspect"),
+                .headerSearchPath("Server/Others"),
+                .headerSearchPath("Server/Perspective"),
+                .headerSearchPath("Shared"),
+                .headerSearchPath("Shared/Category"),
+                .headerSearchPath("Shared/Message"),
+                .headerSearchPath("Shared/Peertalk"),
+            ],
+            cxxSettings: [
+                .define("SHOULD_COMPILE_LOOKIN_SERVER", to: "1", .when(configuration: .debug)),
+                .define("SPM_LOOKIN_SERVER_ENABLED", to: "1", .when(configuration: .debug))
+            ]
+        ),
+        .target(
+            name: "LookinServerSwift",
+            dependencies: [.target(name: "LookinServerBase")],
+            path: "Src/Swift",
+            cxxSettings: [
+                .define("SHOULD_COMPILE_LOOKIN_SERVER", to: "1", .when(configuration: .debug)),
+                .define("SPM_LOOKIN_SERVER_ENABLED", to: "1", .when(configuration: .debug))
+            ],
+            swiftSettings: [
+                .define("SHOULD_COMPILE_LOOKIN_SERVER", .when(configuration: .debug)),
+                .define("SPM_LOOKIN_SERVER_ENABLED", .when(configuration: .debug))
+            ]
+        ),
+        .target(
+            name: "LookinServerBase",
+            dependencies: [],
+            path: "Src/Base",
+            publicHeadersPath: "",
+            cxxSettings: [
+                .define("SHOULD_COMPILE_LOOKIN_SERVER", to: "1", .when(configuration: .debug))
+            ]
+        )
     ]
 )

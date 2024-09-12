@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "lookinserver",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/QMUI/LookinServer",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "58067cf9cd30662f7082681d8f5083524a4262b1"
+      }
+    }
+  ],
+  "version" : 2
+}
